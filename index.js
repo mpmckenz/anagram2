@@ -1,24 +1,31 @@
-document.getElementById("findButton").onclick = function() {
+function alphabetize(a) {
+    return a.toLowerCase().split("").sort().join("").trim();
+}
+let fiveWordAnagramSets = {};
+let AnagramSetList = [];
 
-    let typedText = document.getElementById("wordInput").value;
-        typedText = alphabetize(typedText)
-    let anagrams = [];
+for (let i = 0; i < words.length; i++) {
+    fiveWordAnagramSets[alphabetize(words[i])] = [];
+}
 
-    for(let x = 0; x < words.length; x++) {
-        let currentWord = words[x];
-
-        if (typedText == alphabetize(currentWord)) {
-            anagrams.push(currentWord)
-        }
-    }
-
-    for(let word in anagrams) {
-        let span = document.createElement("span");
-        let textContent = document.createTextNode(anagrams[word] + ", ");
-        span.appendChild(textContent);
-        document.getElementById("wordDiv").appendChild(span)
+for (i = 0; i < words.length; i++) {
+    let abcWords = alphabetize(words[i]);
+    if (abcWords in fiveWordAnagramSets) {
+        fiveWordAnagramSets[abcWords].push(words[i]);
     }
 }
- function alphabetize(a) {
-    return a.toLowerCase().split("").sort().join("").trim();
-   }
+
+function postList(text) {
+    const postList = document.createElement("div");
+    const textNode = document.createTextNode(text);
+    postList.appendChild(textNode);
+    document.getElementById("fiveWords").appendChild(postList);
+}
+
+for (let i = 0; i < words.length; i++) {
+    if (fiveWordAnagramSets[alphabetize(words[i])].length >= 5 && alphabetize(words[i])
+        in AnagramSetList === false) {
+        postList(alphabetize(words[i]) + ": [" + fiveWordAnagramSets[alphabetize(words[i])] + "]");
+        AnagramSetList[alphabetize(words[i])] = [];
+    }
+}
